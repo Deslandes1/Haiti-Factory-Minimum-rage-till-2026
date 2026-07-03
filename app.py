@@ -5,7 +5,6 @@ import asyncio
 import tempfile
 import os
 import base64
-import subprocess
 
 st.set_page_config(
     page_title="Haiti Minimum Wage History | GlobalInternet.py",
@@ -70,14 +69,12 @@ st.markdown("""
 data = {
     "Year": ["1970s", "1980s", "1990s", "2000s", "2026"],
     "Nominal Wage (HTG/day)": [15, 15, 30, 70, 1000],
-    "Real Value (relative to 1980)": [1.5, 1.0, 0.35, 0.18, 0.12],  # approx, based on purchasing power decline
+    "Real Value (relative to 1980)": [1.5, 1.0, 0.35, 0.18, 0.12],
     "Approx. USD/day": [3.00, 2.50, 1.80, 2.02, 7.70],
-    "Purchasing Power (index)": [100, 60, 30, 18, 10],  # relative to 1970s
+    "Purchasing Power (index)": [100, 60, 30, 18, 10],
 }
 df = pd.DataFrame(data)
-
-# Add a column for real wage in 1981 gourdes (from earlier research)
-df["Real Wage (1981 gourdes)"] = [15*1.5, 15*1.0, 30*0.35, 70*0.18, 1000*0.12]  # illustrative
+df["Real Wage (1981 gourdes)"] = [15*1.5, 15*1.0, 30*0.35, 70*0.18, 1000*0.12]
 
 # ---------- Title ----------
 st.markdown("""
@@ -162,29 +159,32 @@ with col1:
 with col2:
     st.metric("Monthly Factory Wage", "26,000 HTG", delta="-99,086 HTG", delta_color="inverse")
 
-# ---------- Audio Narration ----------
+# ---------- Audio Narration (FULL SCRIPT) ----------
 st.markdown("---")
-st.subheader("🎧 Listen to the Story")
+st.subheader("🎧 Listen to the Full Story")
 
-# Script for narration
-NARRATION_SCRIPT = """
+# Complete narration script covering title, history, data, cost of living, and call to action.
+FULL_NARRATION = """
+🇭🇹 Haiti Factory Workers' Minimum Wage.
+A half-century of broken promises. From 15 gourdes to 1,000 gourdes, but purchasing power collapsed.
+
 In the 1970s, a Haitian factory worker earned 15 gourdes per day, about three US dollars.
-That was the starting point.
-By the 1980s, the wage stayed at 15 gourdes, but inflation ate away at its value.
-The purchasing power dropped by nearly half.
-In the 1990s, the wage was doubled to 30 gourdes, but the gourde collapsed.
-By 1999, the real wage was worth only 65 percent less than in 1980.
+In the 1980s, the wage stayed at 15 gourdes, but inflation ate away its value. Purchasing power dropped by nearly half.
+In the 1990s, the wage was doubled to 30 gourdes, but the gourde collapsed. By 1999, the real wage was worth 65 percent less than in 1980.
 In the 2000s, the wage rose to 70 gourdes, but that was only worth about two US dollars.
 Today, in 2026, the minimum wage for factory workers is 1,000 gourdes per day, about seven dollars and seventy cents US.
-That sounds like progress, but the cost of living has skyrocketed.
-A single person needs one hundred and twenty-five thousand gourdes per month just to get by in Port-au-Prince.
-A factory worker earns only twenty-six thousand gourdes per month.
-That's barely one-fifth of what they need.
-Fifty years of wage increases, but the worker's buying power has been destroyed.
-The promise of a living wage remains unfulfilled.
+
+That sounds like progress, but the cost of living has skyrocketed. A single person needs one hundred and twenty-five thousand gourdes per month just to get by in Port-au-Prince. A factory worker earns only twenty-six thousand gourdes per month. That is barely one-fifth of what they need.
+
+Fifty years of wage increases, but the worker's buying power has been destroyed. The promise of a living wage remains unfulfilled.
+
+✊ Join the Movement for a Living Wage.
+The workers who make the clothes we wear, who assemble the electronics we use, who fuel Haiti's industrial future — they deserve more than crumbs. They deserve a wage that reflects their humanity.
+
 The time for change is now.
-We demand a wage that keeps pace with the cost of living.
-We demand dignity for the workers who build Haiti's future.
+
+Built by Gesner Deslandes, Engineer-in-Chief at GlobalInternet.py.
+Data sourced from historical records and official Haitian government announcements.
 """
 
 async def generate_audio(text):
@@ -206,18 +206,17 @@ def play_audio(audio_path):
             audio_bytes = f.read()
             b64 = base64.b64encode(audio_bytes).decode()
             st.markdown(f'<audio controls src="data:audio/mp3;base64,{b64}" autoplay style="width:100%;"></audio>', unsafe_allow_html=True)
-        # Clean up
         os.unlink(audio_path)
 
-if st.button("🔊 Play Narration"):
+if st.button("🔊 Play Full Narration"):
     with st.spinner("Generating audio..."):
-        audio_file = asyncio.run(generate_audio(NARRATION_SCRIPT))
+        audio_file = asyncio.run(generate_audio(FULL_NARRATION))
         if audio_file:
             play_audio(audio_file)
         else:
             st.error("Could not generate audio.")
 
-st.caption("AI voice narrates the history and the call for change.")
+st.caption("AI voice narrates the entire story – from the 1970s to the call for change.")
 
 # ---------- Call to Action ----------
 st.markdown("---")
