@@ -7,12 +7,12 @@ import os
 import base64
 
 st.set_page_config(
-    page_title="Haiti Minimum Wage History | GlobalInternet.py",
+    page_title="Historique du Salaire Minimum en Haïti | GlobalInternet.py",
     layout="wide",
     page_icon="🇭🇹"
 )
 
-# ---------- Custom Styling ----------
+# ---------- Style personnalisé ----------
 st.markdown("""
 <style>
     .stApp {
@@ -65,173 +65,172 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- Data ----------
+# ---------- Données ----------
 data = {
-    "Year": ["1970s", "1980s", "1990s", "2000s", "2026"],
-    "Nominal Wage (HTG/day)": [15, 15, 30, 70, 1000],
-    "Real Value (relative to 1980)": [1.5, 1.0, 0.35, 0.18, 0.12],
-    "Approx. USD/day": [3.00, 2.50, 1.80, 2.02, 7.70],
-    "Purchasing Power (index)": [100, 60, 30, 18, 10],
+    "Décennie": ["1970", "1980", "1990", "2000", "2026"],
+    "Salaire nominal (HTG/jour)": [15, 15, 30, 70, 1000],
+    "Valeur réelle (par rapport à 1980)": [1.5, 1.0, 0.35, 0.18, 0.12],
+    "Équivalent USD/jour": [3.00, 2.50, 1.80, 2.02, 7.70],
+    "Pouvoir d'achat (indice)": [100, 60, 30, 18, 10],
 }
 df = pd.DataFrame(data)
-df["Real Wage (1981 gourdes)"] = [15*1.5, 15*1.0, 30*0.35, 70*0.18, 1000*0.12]
+df["Salaire réel (gourdes de 1981)"] = [15*1.5, 15*1.0, 30*0.35, 70*0.18, 1000*0.12]
 
-# ---------- Title ----------
+# ---------- Titre ----------
 st.markdown("""
 <div class="main-title">
-    <h1>🇭🇹 Haiti Factory Workers' Minimum Wage</h1>
-    <p>A Half‑Century of Broken Promises — From 15 Gourdes to 1,000 Gourdes, but Purchasing Power Collapsed</p>
+    <h1>🇭🇹 Salaire Minimum des Ouvriers d'Usine en Haïti</h1>
+    <p>Un demi‑siècle de promesses non tenues — De 15 gourdes à 1 000 gourdes, mais le pouvoir d'achat s'est effondré</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ---------- Key Metrics ----------
+# ---------- Indicateurs clés ----------
 col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     <div class="stat-box">
-        <div class="label">1970s Wage</div>
-        <div class="value">15 HTG/day</div>
-        <div style="font-size:0.9rem; color:#666;">~ $3.00 USD</div>
+        <div class="label">Salaire – années 1970</div>
+        <div class="value">15 HTG/jour</div>
+        <div style="font-size:0.9rem; color:#666;">~ 3,00 USD</div>
     </div>
     """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
     <div class="stat-box">
-        <div class="label">2026 Wage</div>
-        <div class="value">1,000 HTG/day</div>
-        <div style="font-size:0.9rem; color:#666;">~ $7.70 USD</div>
+        <div class="label">Salaire – 2026</div>
+        <div class="value">1 000 HTG/jour</div>
+        <div style="font-size:0.9rem; color:#666;">~ 7,70 USD</div>
     </div>
     """, unsafe_allow_html=True)
 with col3:
     st.markdown("""
     <div class="stat-box">
-        <div class="label">Real Wage Loss (vs 1980)</div>
-        <div class="value" style="color:#cc0000;">-88%</div>
-        <div style="font-size:0.9rem; color:#666;">Purchasing power collapsed</div>
+        <div class="label">Perte de pouvoir d'achat (vs 1980)</div>
+        <div class="value" style="color:#cc0000;">-88 %</div>
+        <div style="font-size:0.9rem; color:#666;">Le pouvoir d'achat s'est effondré</div>
     </div>
     """, unsafe_allow_html=True)
 
 st.markdown("---")
 
-# ---------- Data Table ----------
-st.subheader("📊 Historical Wage Data")
+# ---------- Tableau des données ----------
+st.subheader("📊 Données historiques des salaires")
 st.dataframe(df.style.format({
-    "Nominal Wage (HTG/day)": "{:,.0f}",
-    "Real Wage (1981 gourdes)": "{:.2f}",
-    "Purchasing Power (index)": "{:.0f}"
+    "Salaire nominal (HTG/jour)": "{:,.0f}",
+    "Salaire réel (gourdes de 1981)": "{:.2f}",
+    "Pouvoir d'achat (indice)": "{:.0f}"
 }), use_container_width=True)
 
-# ---------- Chart ----------
-st.subheader("📈 Nominal vs. Real Wage (Purchasing Power)")
+# ---------- Graphique ----------
+st.subheader("📈 Salaire nominal vs. Salaire réel (pouvoir d'achat)")
 fig = px.line(
     df,
-    x="Year",
-    y=["Nominal Wage (HTG/day)", "Purchasing Power (index)"],
-    title="Nominal wage skyrockets, but purchasing power plummets",
-    labels={"value": "Value", "variable": "Metric"},
+    x="Décennie",
+    y=["Salaire nominal (HTG/jour)", "Pouvoir d'achat (indice)"],
+    title="Le salaire nominal s'envole, mais le pouvoir d'achat s'effondre",
+    labels={"value": "Valeur", "variable": "Indicateur"},
     markers=True,
     color_discrete_map={
-        "Nominal Wage (HTG/day)": "#003366",
-        "Purchasing Power (index)": "#cc0000"
+        "Salaire nominal (HTG/jour)": "#003366",
+        "Pouvoir d'achat (indice)": "#cc0000"
     }
 )
 fig.update_layout(
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     xaxis_title="",
-    yaxis_title="HTG / Index",
+    yaxis_title="HTG / Indice",
     template="plotly_white",
     height=500,
 )
 st.plotly_chart(fig, use_container_width=True)
 
-# ---------- Cost of Living Comparison ----------
+# ---------- Comparaison avec le coût de la vie ----------
 st.markdown("---")
-st.subheader("💰 The Cost of Living Reality")
+st.subheader("💰 La réalité du coût de la vie")
 st.markdown("""
-In **Port-au-Prince**, the estimated monthly cost for a single person is **125,086 HTG**.
-A factory worker earning 1,000 HTG/day for 26 days earns **26,000 HTG/month**.
-That is only **~21%** of what it costs to live.
+À **Port‑au‑Prince**, le coût mensuel estimé pour une personne seule est de **125 086 HTG**.
+Un ouvrier d'usine qui gagne 1 000 HTG/jour pendant 26 jours touche **26 000 HTG/mois**.
+Cela ne représente que **~21 %** de ce qu'il faut pour vivre.
 """)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.metric("Monthly Cost of Living", "125,086 HTG", delta=None)
+    st.metric("Coût mensuel de la vie", "125 086 HTG", delta=None)
 with col2:
-    st.metric("Monthly Factory Wage", "26,000 HTG", delta="-99,086 HTG", delta_color="inverse")
+    st.metric("Salaire mensuel d'usine", "26 000 HTG", delta="-99 086 HTG", delta_color="inverse")
 
-# ---------- Audio Narration (FULL SCRIPT) ----------
+# ---------- Narration audio complète (script en français) ----------
 st.markdown("---")
-st.subheader("🎧 Listen to the Full Story")
+st.subheader("🎧 Écouter l'histoire complète")
 
-# Complete narration script covering title, history, data, cost of living, and call to action.
-FULL_NARRATION = """
-🇭🇹 Haiti Factory Workers' Minimum Wage.
-A half-century of broken promises. From 15 gourdes to 1,000 gourdes, but purchasing power collapsed.
+SCRIPT_NARRATION_FR = """
+🇭🇹 Salaire minimum des ouvriers d'usine en Haïti.
+Un demi-siècle de promesses non tenues. De 15 gourdes à 1 000 gourdes, mais le pouvoir d'achat s'est effondré.
 
-In the 1970s, a Haitian factory worker earned 15 gourdes per day, about three US dollars.
-In the 1980s, the wage stayed at 15 gourdes, but inflation ate away its value. Purchasing power dropped by nearly half.
-In the 1990s, the wage was doubled to 30 gourdes, but the gourde collapsed. By 1999, the real wage was worth 65 percent less than in 1980.
-In the 2000s, the wage rose to 70 gourdes, but that was only worth about two US dollars.
-Today, in 2026, the minimum wage for factory workers is 1,000 gourdes per day, about seven dollars and seventy cents US.
+Dans les années 1970, un ouvrier haïtien gagnait 15 gourdes par jour, environ trois dollars américains.
+Dans les années 1980, le salaire est resté à 15 gourdes, mais l'inflation a rongé sa valeur. Le pouvoir d'achat a chuté de près de moitié.
+Dans les années 1990, le salaire a doublé pour atteindre 30 gourdes, mais la gourde s'est effondrée. En 1999, le salaire réel valait 65 % de moins qu'en 1980.
+Dans les années 2000, le salaire est monté à 70 gourdes, mais cela ne valait qu'environ deux dollars américains.
+Aujourd'hui, en 2026, le salaire minimum pour les ouvriers d'usine est de 1 000 gourdes par jour, soit environ sept dollars soixante-dix américains.
 
-That sounds like progress, but the cost of living has skyrocketed. A single person needs one hundred and twenty-five thousand gourdes per month just to get by in Port-au-Prince. A factory worker earns only twenty-six thousand gourdes per month. That is barely one-fifth of what they need.
+Cela ressemble à un progrès, mais le coût de la vie a explosé. Une personne seule a besoin de cent vingt-cinq mille quatre-vingt-six gourdes par mois rien que pour vivre à Port-au-Prince. Un ouvrier d'usine ne gagne que vingt-six mille gourdes par mois. C'est à peine un cinquième de ce dont il a besoin.
 
-Fifty years of wage increases, but the worker's buying power has been destroyed. The promise of a living wage remains unfulfilled.
+Cinquante ans d'augmentations salariales, mais le pouvoir d'achat du travailleur a été anéanti. La promesse d'un salaire décent reste inachevée.
 
-✊ Join the Movement for a Living Wage.
-The workers who make the clothes we wear, who assemble the electronics we use, who fuel Haiti's industrial future — they deserve more than crumbs. They deserve a wage that reflects their humanity.
+✊ Rejoignez le mouvement pour un salaire décent.
+Les ouvriers qui fabriquent les vêtements que nous portons, qui assemblent les appareils électroniques que nous utilisons, qui alimentent l'avenir industriel d'Haïti – ils méritent plus que des miettes. Ils méritent un salaire qui reflète leur humanité.
 
-The time for change is now.
+Le moment du changement est venu.
 
-Built by Gesner Deslandes, Engineer-in-Chief at GlobalInternet.py.
-Data sourced from historical records and official Haitian government announcements.
+Conçu par Gesner Deslandes, ingénieur en chef chez GlobalInternet.py.
+Données issues des archives historiques et des annonces officielles du gouvernement haïtien.
 """
 
-async def generate_audio(text):
+async def generer_audio(texte):
     try:
         import edge_tts
-        voice = "en-US-GuyNeural"
+        voix = "fr-FR-DeniseNeural"  # voix féminine native française
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
-            output_path = tmp.name
-        comm = edge_tts.Communicate(text, voice)
-        await comm.save(output_path)
-        return output_path
+            chemin = tmp.name
+        comm = edge_tts.Communicate(texte, voix)
+        await comm.save(chemin)
+        return chemin
     except Exception as e:
-        st.error(f"Audio generation failed: {e}")
+        st.error(f"Échec de la génération audio : {e}")
         return None
 
-def play_audio(audio_path):
-    if audio_path and os.path.exists(audio_path):
-        with open(audio_path, "rb") as f:
+def lire_audio(chemin):
+    if chemin and os.path.exists(chemin):
+        with open(chemin, "rb") as f:
             audio_bytes = f.read()
             b64 = base64.b64encode(audio_bytes).decode()
             st.markdown(f'<audio controls src="data:audio/mp3;base64,{b64}" autoplay style="width:100%;"></audio>', unsafe_allow_html=True)
-        os.unlink(audio_path)
+        os.unlink(chemin)
 
-if st.button("🔊 Play Full Narration"):
-    with st.spinner("Generating audio..."):
-        audio_file = asyncio.run(generate_audio(FULL_NARRATION))
-        if audio_file:
-            play_audio(audio_file)
+if st.button("🔊 Écouter l'histoire complète"):
+    with st.spinner("Génération de l'audio..."):
+        fichier_audio = asyncio.run(generer_audio(SCRIPT_NARRATION_FR))
+        if fichier_audio:
+            lire_audio(fichier_audio)
         else:
-            st.error("Could not generate audio.")
+            st.error("Impossible de générer l'audio.")
 
-st.caption("AI voice narrates the entire story – from the 1970s to the call for change.")
+st.caption("La voix IA raconte toute l'histoire – des années 1970 à l'appel au changement.")
 
-# ---------- Call to Action ----------
+# ---------- Appel à l'action ----------
 st.markdown("---")
 st.markdown("""
-### ✊ Join the Movement for a Living Wage
+### ✊ Rejoignez le mouvement pour un salaire décent
 
-The workers who make the clothes we wear, who assemble the electronics we use, who fuel Haiti's industrial future — they deserve more than crumbs. They deserve a wage that reflects their humanity.
+Les ouvriers qui fabriquent les vêtements que nous portons, qui assemblent les appareils électroniques que nous utilisons, qui alimentent l'avenir industriel d'Haïti – ils méritent plus que des miettes. Ils méritent un salaire qui reflète leur humanité.
 
-**The time for change is now.**
+**Le moment du changement est venu.**
 """)
 
-# ---------- Footer ----------
+# ---------- Pied de page ----------
 st.markdown("""
 <div class="footer">
-    Built by <strong>Gesner Deslandes</strong>, Engineer‑in‑Chief at GlobalInternet.py<br>
-    Data sourced from historical records and official Haitian government announcements.
+    Conçu par <strong>Gesner Deslandes</strong>, ingénieur en chef chez GlobalInternet.py<br>
+    Données issues des archives historiques et des annonces officielles du gouvernement haïtien.
 </div>
 """, unsafe_allow_html=True)
